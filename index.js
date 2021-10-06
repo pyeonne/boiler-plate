@@ -26,7 +26,7 @@ mongoose
     .catch(err => console.log(err));
 
 app.get('/', (req, res) => {
-    res.send('Hello World!~~안녕하세요 ~ ');
+    res.send('Hello World!~~안녕하세요 ~ ㅇ.ㅇ');
 });
 
 // 회원가입을 위한 라우터
