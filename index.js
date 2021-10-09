@@ -3,6 +3,7 @@ const app = express();
 const port = 5000;
 const cookieParser = require('cookie-parser');
 const config = require('./config/key');
+const { auth } = require('./middleware/auth');
 const { User } = require('./models/User');
 
 // application/x-www-form-urlencoded
@@ -30,7 +31,7 @@ app.get('/', (req, res) => {
 });
 
 // 회원가입 라우터
-app.post('/register', (req, res) => {
+app.post('/api/users/register', (req, res) => {
     // 회원가입할 때 필요한 정보들을 client에서 가져오면
     // 그것들을 데이터 베이스에 넣어준다.
     const user = new User(req.body);
@@ -66,6 +67,21 @@ app.post('/api/users/login', (req, res) => {
                 res.cookie('x_auth', user.token).status(200).json({ loginSuccess: true, userId: user._id });
             });
         });
+    });
+});
+
+// role 1 어드민 / role 2 특정 부서 어드민
+// role 0 일반 유저 / role 0이 아니면 관리자
+app.get('/api/users/auth', auth, (req, res) => {
+    // 여기까지 미들웨어를 통과해 왔다는 얘기는 Authentication이 True라는 말.
+    res.status(200).json({
+        _id: req.user._id,
+        isAdmin: req.user.role === 0 ? false : true,
+        isAuth: true,
+        email: req.user.email,
+        name: req.user.name,
+        role: req.user.role,
+        image: req.user.image,
     });
 });
 
