@@ -70,6 +70,7 @@ app.post('/api/users/login', (req, res) => {
     });
 });
 
+// Auth 라우터
 // role 1 어드민 / role 2 특정 부서 어드민
 // role 0 일반 유저 / role 0이 아니면 관리자
 app.get('/api/users/auth', auth, (req, res) => {
@@ -82,6 +83,16 @@ app.get('/api/users/auth', auth, (req, res) => {
         name: req.user.name,
         role: req.user.role,
         image: req.user.image,
+    });
+});
+
+// 로그아웃 라우터
+app.get('/api/users/logout', auth, (req, res) => {
+    User.findOneAndUpdate({ _id: req.user._id }, { token: '' }, (err, user) => {
+        if (err) return res.json({ success: false, err });
+        return res.status(200).send({
+            success: true,
+        });
     });
 });
 

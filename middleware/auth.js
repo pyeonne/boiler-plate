@@ -1,6 +1,6 @@
 const { User } = require('../models/User');
 
-let auth = (rea, res, next) => {
+let auth = (req, res, next) => {
     // 인증 처리를 하는 곳
 
     // 클라이언트 쿠키에서 토큰을 가져온다.
